@@ -1,9 +1,7 @@
-package git.snippets.netty;
+package git.snippets.netty.v3;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.ReferenceCountUtil;
 
 /**
  * @author Grey
@@ -11,9 +9,8 @@ import io.netty.util.ReferenceCountUtil;
 public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)
-        // Discard the received data silently.
-        ((ByteBuf) msg).release(); // (3)
-        // ReferenceCountUtil.release(msg);
+        ctx.write(msg); // (1)
+        ctx.flush(); // (2)
     }
 
     @Override

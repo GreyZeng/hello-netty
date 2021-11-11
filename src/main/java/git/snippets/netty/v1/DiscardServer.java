@@ -1,4 +1,4 @@
-package git.snippets.netty;
+package git.snippets.netty.v1;
 
 import io.netty.bootstrap.ServerBootstrap;
 
