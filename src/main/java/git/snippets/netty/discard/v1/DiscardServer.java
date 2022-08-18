@@ -1,6 +1,7 @@
-package git.snippets.netty.v2;
+package git.snippets.netty.discard.v1;
 
 import io.netty.bootstrap.ServerBootstrap;
+
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -9,7 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-// 参考：https://netty.io/wiki/user-guide-for-4.x.html
+// 参考：https://netty.io/wiki/user-guide-for-5.x.html
 public class DiscardServer {
     private final int port;
 
@@ -29,8 +30,7 @@ public class DiscardServer {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new DiscardServerHandler());
                         }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+                    }).option(ChannelOption.SO_BACKLOG, 128)          // (5)
                     .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
 
             // Bind and start to accept incoming connections.
@@ -47,11 +47,6 @@ public class DiscardServer {
     }
 
     public static void main(String[] args) throws Exception {
-        int port = 8080;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-        }
-
-        new DiscardServer(port).run();
+        new DiscardServer(8080).run();
     }
 }

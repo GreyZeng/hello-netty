@@ -1,12 +1,13 @@
-package git.snippets.netty.v1;
+package git.snippets.netty.discard.v1;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.ReferenceCountUtil;
 
 /**
  * @author Grey
+ *
+ * <a href="http://ifeve.com/netty5-user-guide/">user guide</a>
  */
 public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
     @Override

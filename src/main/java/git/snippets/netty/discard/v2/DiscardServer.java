@@ -1,4 +1,4 @@
-package git.snippets.netty.v3;
+package git.snippets.netty.discard.v2;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

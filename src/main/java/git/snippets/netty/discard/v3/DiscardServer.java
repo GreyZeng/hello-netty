@@ -1,7 +1,6 @@
-package git.snippets.netty.v1;
+package git.snippets.netty.discard.v3;
 
 import io.netty.bootstrap.ServerBootstrap;
-
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
