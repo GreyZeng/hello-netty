@@ -1,6 +1,5 @@
 package com.imooc.netty.ch6.exceptionspread;
 
-import com.sun.corba.se.impl.presentation.rmi.ExceptionHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -22,22 +21,18 @@ public final class Server {
 
         try {
             ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .childOption(ChannelOption.TCP_NODELAY, true)
-                    .childAttr(AttributeKey.newInstance("childAttr"), "childAttrValue")
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        public void initChannel(SocketChannel ch) {
-                            ch.pipeline().addLast(new InBoundHandlerA());
-                            ch.pipeline().addLast(new InBoundHandlerB());
-                            ch.pipeline().addLast(new InBoundHandlerC());
-                            ch.pipeline().addLast(new OutBoundHandlerA());
-                            ch.pipeline().addLast(new OutBoundHandlerB());
-                            ch.pipeline().addLast(new OutBoundHandlerC());
-                            ch.pipeline().addLast(new ExceptionCaughtHandler());
-                        }
-                    });
+            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childOption(ChannelOption.TCP_NODELAY, true).childAttr(AttributeKey.newInstance("childAttr"), "childAttrValue").childHandler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                public void initChannel(SocketChannel ch) {
+                    ch.pipeline().addLast(new InBoundHandlerA());
+                    ch.pipeline().addLast(new InBoundHandlerB());
+                    ch.pipeline().addLast(new InBoundHandlerC());
+                    ch.pipeline().addLast(new OutBoundHandlerA());
+                    ch.pipeline().addLast(new OutBoundHandlerB());
+                    ch.pipeline().addLast(new OutBoundHandlerC());
+                    ch.pipeline().addLast(new ExceptionCaughtHandler());
+                }
+            });
 
             ChannelFuture f = b.bind(8888).sync();
 
