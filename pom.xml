@@ -8,11 +8,11 @@
     <artifactId>hello-netty</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>hello-netty</name>
+    <name>${artifactId}</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId> <!-- Use 'netty-all' for 4.0 or above -->
-            <version>4.1.79.Final</version>
+            <version>4.1.80.Final</version>
         </dependency>
     </dependencies>
 
