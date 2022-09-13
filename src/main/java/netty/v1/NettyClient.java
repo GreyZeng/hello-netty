@@ -20,7 +20,13 @@ public class NettyClient {
     public static void main(String[] args) throws InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
         NioEventLoopGroup group = new NioEventLoopGroup();
-        bootstrap.group(group).channel(NioSocketChannel.class).handler(new ChannelInitializer<>() {
+        bootstrap
+                // 指定线程模型
+                .group(group)
+                // 指定 IO 类型为 NIO
+                .channel(NioSocketChannel.class)
+                // IO 处理逻辑
+                .handler(new ChannelInitializer<>() {
             @Override
             protected void initChannel(Channel channel) {
                 channel.pipeline().addLast(new StringEncoder());
