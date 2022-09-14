@@ -20,8 +20,8 @@
     <dependencies>
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId> <!-- Use 'netty-all' for 4.0 or above -->
-            <version>4.1.80.Final</version>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.81.Final</version>
         </dependency>
     </dependencies>
 

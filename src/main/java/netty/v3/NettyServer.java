@@ -52,13 +52,23 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
-                       ch.pipeline().addLast(new ChannelInboundHandlerAdapter(){
-                           @Override
-                           public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                               ByteBuf byteBuf = (ByteBuf) msg;
-                               System.out.println(new Date() + ": 服务端读到数据->"+byteBuf.toString(StandardCharsets.UTF_8));
-                           }
-                       });
+                        ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
+                            // 不管服务端还是客户端，收到数据后都会调用channelRead()方法
+                            @Override
+                            public void channelRead(ChannelHandlerContext ctx, Object msg) {
+                                ByteBuf byteBuf = (ByteBuf) msg;
+                                System.out.println(new Date() + ": 服务端读到数据 -> " + byteBuf.toString(StandardCharsets.UTF_8));
+                                // 服务端将读到的数据返回客户端
+                                System.out.println(new Date() + ": 服务端写出数据");
+                                ctx.channel().writeAndFlush(getByteBuf(ctx));
+                            }
+                            private ByteBuf getByteBuf(ChannelHandlerContext ctx) {
+                                byte[] bytes = "hello world from server!".getBytes(StandardCharsets.UTF_8);
+                                ByteBuf buffer = ctx.alloc().buffer();
+                                buffer.writeBytes(bytes);
+                                return buffer;
+                            }
+                        });
                     }
                 });
         // 本地绑定一个8000端口启动服务

@@ -59,6 +59,13 @@ public class NettyClient {
                                 // 注：Netty中的数据是以 ByteBuf 为单位的。
                                 ctx.channel().writeAndFlush(getByteBuf(ctx));
                             }
+
+                            @Override
+                            public void channelRead(ChannelHandlerContext ctx, Object msg) {
+                                ByteBuf byteBuf = (ByteBuf) msg;
+                                System.out.println(new Date() + ": 客户端读取到的数据 -> " + byteBuf.toString(StandardCharsets.UTF_8));
+                            }
+
                             private ByteBuf getByteBuf(ChannelHandlerContext ctx) {
                                 ByteBuf buffer = ctx.alloc().buffer();
                                 byte[] bytes = "hello world".getBytes(StandardCharsets.UTF_8);
