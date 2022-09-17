@@ -1,15 +1,16 @@
 package chat.client;
 
+import chat.protocol.LoginRequestPacket;
+import chat.protocol.LoginResponsePacket;
+import chat.protocol.Packet;
+import chat.protocol.PacketCodeC;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 
 
 import java.util.Date;
 import java.util.UUID;
-import java.util.Date;
 
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>
@@ -18,7 +19,7 @@ import java.util.Date;
  */
 public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
         System.out.println(new Date() + ": 客户端开始登录");
 
         // 创建登录对象
@@ -33,6 +34,8 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         // 写数据
         ctx.channel().writeAndFlush(buffer);
     }
+
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf byteBuf = (ByteBuf) msg;
