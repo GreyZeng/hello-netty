@@ -38,6 +38,7 @@ public class NettyClient {
             @Override
             public void initChannel(SocketChannel ch) {
 //                        ch.pipeline().addLast(new ClientHandler());
+                // 第一个参数是数据包的最大长度，第二个参数是长度域的偏移量，第三个参数是长度域的长度。
 //                 ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4));
                 ch.pipeline().addLast(new Spliter());
                 ch.pipeline().addLast(new PacketDecoder());

@@ -21,6 +21,7 @@ public class Spliter extends LengthFieldBasedFrameDecoder {
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         if (in.getInt(in.readerIndex()) != PacketCodeC.MAGIC_NUMBER) {
+            // 判断前四个字节是否等于自定义的魔数
             ctx.channel().close();
             return null;
         }
