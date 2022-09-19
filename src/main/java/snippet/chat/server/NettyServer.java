@@ -1,20 +1,27 @@
 package snippet.chat.server;
 
+import snippet.chat.client.LifeCycleTestHandler;
 import snippet.chat.protocol.PacketDecoder;
 import snippet.chat.protocol.PacketEncoder;
-import snippet.chat.protocol.Spliter;
+import snippet.chat.protocol.Splitter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import snippet.chat.server.inbound.InHandlerA;
+import snippet.chat.server.inbound.InHandlerB;
+import snippet.chat.server.inbound.InHandlerC;
+import snippet.chat.server.outbound.OutHandlerA;
+import snippet.chat.server.outbound.OutHandlerB;
+import snippet.chat.server.outbound.OutHandlerC;
 
 import java.util.Date;
 
 public class NettyServer {
 
-    private static final int PORT = 8001;
+    private static final int PORT = 8000;
 
     public static void main(String[] args) {
         NioEventLoopGroup boosGroup = new NioEventLoopGroup();
@@ -25,7 +32,14 @@ public class NettyServer {
             protected void initChannel(NioSocketChannel ch) {
 //                        ch.pipeline().addLast(new ServerHandler());
                 //ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4));
-                ch.pipeline().addLast(new Spliter());
+               // ch.pipeline().addLast(new InHandlerA());
+               // ch.pipeline().addLast(new InHandlerB());
+               // ch.pipeline().addLast(new InHandlerC());
+               // ch.pipeline().addLast(new OutHandlerA());
+               // ch.pipeline().addLast(new OutHandlerB());
+               // ch.pipeline().addLast(new OutHandlerC());
+                //ch.pipeline().addLast(new LifeCycleTestHandler());
+                ch.pipeline().addLast(new Splitter());
                 ch.pipeline().addLast(new PacketDecoder());
                 ch.pipeline().addLast(new LoginRequestHandler());
                 ch.pipeline().addLast(new MessageRequestHandler());

@@ -9,12 +9,12 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
  * @date 2022/9/12
  * @since
  */
-public class Spliter extends LengthFieldBasedFrameDecoder {
+public class Splitter extends LengthFieldBasedFrameDecoder {
 
     private static final int LEN_FIELD_OFFSET = 7;
     private static final int LEN_FIELD_LENGTH = 4;
 
-    public Spliter() {
+    public Splitter() {
         super(Integer.MAX_VALUE, LEN_FIELD_OFFSET, LEN_FIELD_LENGTH);
     }
 

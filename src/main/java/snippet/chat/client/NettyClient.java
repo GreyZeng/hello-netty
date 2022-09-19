@@ -5,7 +5,7 @@ import snippet.chat.protocol.MessageRequestPacket;
 import snippet.chat.protocol.PacketDecoder;
 import snippet.chat.protocol.PacketEncoder;
 
-import snippet.chat.protocol.Spliter;
+import snippet.chat.protocol.Splitter;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class NettyClient {
     private static final int MAX_RETRY = 5;
     private static final String HOST = "127.0.0.1";
-    private static final int PORT = 8001;
+    private static final int PORT = 8000;
 
 
     public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class NettyClient {
 //                        ch.pipeline().addLast(new ClientHandler());
                 // 第一个参数是数据包的最大长度，第二个参数是长度域的偏移量，第三个参数是长度域的长度。
 //                 ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4));
-                ch.pipeline().addLast(new Spliter());
+                ch.pipeline().addLast(new Splitter());
                 ch.pipeline().addLast(new PacketDecoder());
                 ch.pipeline().addLast(new LoginResponseHandler());
                 ch.pipeline().addLast(new MessageResponseHandler());
