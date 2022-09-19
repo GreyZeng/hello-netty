@@ -20,21 +20,15 @@ public class NettyServer {
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         final ServerBootstrap serverBootstrap = new ServerBootstrap();
-        serverBootstrap
-                .group(boosGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_BACKLOG, 1024)
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childOption(ChannelOption.TCP_NODELAY, true)
-                .childHandler(new ChannelInitializer<NioSocketChannel>() {
-                    protected void initChannel(NioSocketChannel ch) {
+        serverBootstrap.group(boosGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024).childOption(ChannelOption.SO_KEEPALIVE, true).childOption(ChannelOption.TCP_NODELAY, true).childHandler(new ChannelInitializer<NioSocketChannel>() {
+            protected void initChannel(NioSocketChannel ch) {
 //                        ch.pipeline().addLast(new ServerHandler());
-                        ch.pipeline().addLast(new PacketDecoder());
-                        ch.pipeline().addLast(new LoginRequestHandler());
-                        ch.pipeline().addLast(new MessageRequestHandler());
-                        ch.pipeline().addLast(new PacketEncoder());
-                    }
-                });
+                ch.pipeline().addLast(new PacketDecoder());
+                ch.pipeline().addLast(new LoginRequestHandler());
+                ch.pipeline().addLast(new MessageRequestHandler());
+                ch.pipeline().addLast(new PacketEncoder());
+            }
+        });
 
 
         bind(serverBootstrap, PORT);
