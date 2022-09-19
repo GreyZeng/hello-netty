@@ -2,6 +2,8 @@ package chat.protocol;
 
 import lombok.Data;
 
+import static chat.protocol.Command.MESSAGE_RESPONSE;
+
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>
  * @date 2022/9/12
@@ -13,6 +15,6 @@ public class MessageResponsePacket extends Packet {
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_RESPONSE;
+        return MESSAGE_RESPONSE;
     }
 }

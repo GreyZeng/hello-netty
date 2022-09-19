@@ -43,19 +43,6 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         ByteBuf byteBuf = (ByteBuf) msg;
 
         Packet packet = PacketCodeC.INSTANCE.decode(byteBuf);
-        //Object o = new ArrayList<String>();
-        //// jdk 16
-        //if (o instanceof ArrayList list) {
-        //    list.add("a");
-        //}
-
-        //// before jdk 16
-        //if (o instanceof ArrayList) {
-        //    ArrayList list = (ArrayList) o;
-        //    list.add("a");
-
-        //}
-        // jdk 16 新语法
         if (packet instanceof LoginResponsePacket loginResponsePacket) {
             if (loginResponsePacket.isSuccess()) {
                 LoginUtil.markAsLogin(ctx.channel());

@@ -10,6 +10,8 @@ import java.util.Map;
 
 import static chat.protocol.Command.LOGIN_REQUEST;
 import static chat.protocol.Command.LOGIN_RESPONSE;
+import static chat.protocol.Command.MESSAGE_REQUEST;
+import static chat.protocol.Command.MESSAGE_RESPONSE;
 
 
 public class PacketCodeC {
@@ -25,8 +27,8 @@ public class PacketCodeC {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
-        packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
-        packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
         serializerMap.put(serializer.getSerializerAlogrithm(), serializer);
@@ -38,7 +40,6 @@ public class PacketCodeC {
         ByteBuf byteBuf = byteBufAllocator.ioBuffer();
         // 2. 序列化 java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
-
         // 3. 实际编码过程
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
@@ -46,7 +47,6 @@ public class PacketCodeC {
         byteBuf.writeByte(packet.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
-
         return byteBuf;
     }
 
