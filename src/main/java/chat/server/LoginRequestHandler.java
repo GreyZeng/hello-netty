@@ -1,53 +1,38 @@
 package chat.server;
 
-import chat.LoginUtil;
 import chat.protocol.LoginRequestPacket;
 import chat.protocol.LoginResponsePacket;
-import chat.protocol.MessageResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+
 import java.util.Date;
-import java.util.UUID;
+
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>
  * @date 2022/9/12
  * @since
  */
-public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
-
+public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-        // 创建登录对象
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-        loginRequestPacket.setUserId(UUID.randomUUID().toString());
-        loginRequestPacket.setUsername("flash");
-        loginRequestPacket.setPassword("pwd");
+    protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket loginRequestPacket) {
+        System.out.println(new Date() + ": 收到客户端登录请求……");
 
-        // 写数据
-        ctx.channel().writeAndFlush(loginRequestPacket);
-    }
-
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket) {
-        if (loginResponsePacket.isSuccess()) {
-            System.out.println(new Date() + ": 客户端登录成功");
-            LoginUtil.markAsLogin(ctx.channel());
+        LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
+        loginResponsePacket.setVersion(loginRequestPacket.getVersion());
+        if (valid(loginRequestPacket)) {
+            loginResponsePacket.setSuccess(true);
+            System.out.println(new Date() + ": 登录成功!");
         } else {
-            System.out.println(new Date() + ": 客户端登录失败，原因：" + loginResponsePacket.getReason());
+            loginResponsePacket.setReason("账号密码校验失败");
+            loginResponsePacket.setSuccess(false);
+            System.out.println(new Date() + ": 登录失败!");
         }
+
+        // 登录响应
+        ctx.channel().writeAndFlush(loginResponsePacket);
     }
 
-    /**
-     * @author <a href="mailto:410486047@qq.com">Grey</a>
-     * @date 2022/9/12
-     * @since
-     */
-
-
-    /**
-     * @author <a href="mailto:410486047@qq.com">Grey</a>
-     * @date 2022/9/12
-     * @since
-     */
-
+    private boolean valid(LoginRequestPacket loginRequestPacket) {
+        return true;
+    }
 }
