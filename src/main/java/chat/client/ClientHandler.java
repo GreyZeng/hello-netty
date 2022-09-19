@@ -41,10 +41,20 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         ByteBuf byteBuf = (ByteBuf) msg;
 
         Packet packet = PacketCodeC.INSTANCE.decode(byteBuf);
+        //Object o = new ArrayList<String>();
+        //// jdk 16
+        //if (o instanceof ArrayList list) {
+        //    list.add("a");
+        //}
 
-        if (packet instanceof LoginResponsePacket) {
-            LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
+        //// before jdk 16
+        //if (o instanceof ArrayList) {
+        //    ArrayList list = (ArrayList) o;
+        //    list.add("a");
 
+        //}
+        // jdk 16 新语法
+        if (packet instanceof LoginResponsePacket loginResponsePacket) {
             if (loginResponsePacket.isSuccess()) {
                 System.out.println(new Date() + ": 客户端登录成功");
             } else {
