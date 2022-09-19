@@ -1,6 +1,7 @@
 package chat.protocol;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>
@@ -8,8 +9,13 @@ import lombok.Data;
  * @since
  */
 @Data
+@NoArgsConstructor
 public class MessageRequestPacket extends Packet {
     private String message;
+
+    public MessageRequestPacket(String message) {
+        this.message = message;
+    }
 
     @Override
     public Byte getCommand() {
