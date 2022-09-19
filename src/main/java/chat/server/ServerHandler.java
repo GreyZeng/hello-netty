@@ -18,13 +18,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         System.out.println(new Date() + ": 客户端开始登录……");
         ByteBuf requestByteBuf = (ByteBuf) msg;
-
         Packet packet = PacketCodeC.INSTANCE.decode(requestByteBuf);
-
-        if (packet instanceof LoginRequestPacket) {
+        ByteBuf byteBuf = null;
+        if (packet instanceof LoginRequestPacket loginRequestPacket) {
             // 登录流程
-            LoginRequestPacket loginRequestPacket = (LoginRequestPacket) packet;
-
             LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
             loginResponsePacket.setVersion(packet.getVersion());
             if (valid(loginRequestPacket)) {
@@ -36,9 +33,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 System.out.println(new Date() + ": 登录失败!");
             }
             // 登录响应
-            ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), loginResponsePacket);
-            ctx.channel().writeAndFlush(responseByteBuf);
+            byteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), loginResponsePacket);
+        } else if (packet instanceof MessageRequestPacket messageRequestPacket) {
+            System.out.println(new Date() + ": 收到客户端消息：" + messageRequestPacket.getMessage());
+            MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
+            messageResponsePacket.setMessage("服务端回复【" + messageRequestPacket.getMessage() + "】");
+            byteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), messageResponsePacket);
         }
+        ctx.channel().writeAndFlush(byteBuf);
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {

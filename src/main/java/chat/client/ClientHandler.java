@@ -1,7 +1,9 @@
 package chat.client;
 
+import chat.LoginUtil;
 import chat.protocol.LoginRequestPacket;
 import chat.protocol.LoginResponsePacket;
+import chat.protocol.MessageResponsePacket;
 import chat.protocol.Packet;
 import chat.protocol.PacketCodeC;
 import io.netty.channel.ChannelHandlerContext;
@@ -56,10 +58,13 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         // jdk 16 新语法
         if (packet instanceof LoginResponsePacket loginResponsePacket) {
             if (loginResponsePacket.isSuccess()) {
+                LoginUtil.markAsLogin(ctx.channel());
                 System.out.println(new Date() + ": 客户端登录成功");
             } else {
                 System.out.println(new Date() + ": 客户端登录失败，原因：" + loginResponsePacket.getReason());
             }
+        } else if (packet instanceof MessageResponsePacket messageResponsePacket) {
+            System.out.println(new Date() + ": 收到服务端的消息：" + messageResponsePacket.getMessage());
         }
     }
 }

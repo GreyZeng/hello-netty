@@ -8,11 +8,11 @@ import lombok.Data;
  * @since
  */
 @Data
-public class MessageRequestPacket extends Packet {
+public class MessageResponsePacket extends Packet {
     private String message;
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return Command.MESSAGE_RESPONSE;
     }
 }
