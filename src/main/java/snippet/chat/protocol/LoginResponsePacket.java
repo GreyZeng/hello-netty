@@ -1,11 +1,15 @@
 package snippet.chat.protocol;
 
-import lombok.Data;
+import lombok.Data; 
 
-import static snippet.chat.protocol.Command.LOGIN_RESPONSE;
+import static snippet.chat.protocol.Command.LOGIN_RESPONSE; 
 
 @Data
 public class LoginResponsePacket extends Packet {
+    private String userId;
+
+    private String userName;
+
     private boolean success;
 
     private String reason;

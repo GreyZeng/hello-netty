@@ -1,13 +1,10 @@
 package snippet.chat.client;
 
-import snippet.chat.LoginUtil;
-import snippet.chat.protocol.LoginRequestPacket;
-import snippet.chat.protocol.LoginResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.Date;
-import java.util.UUID;
+import snippet.chat.SessionUtil;
+import snippet.chat.protocol.LoginResponsePacket;
+import snippet.chat.protocol.Session;
 
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>
@@ -17,24 +14,20 @@ import java.util.UUID;
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-        // 创建登录对象
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-        loginRequestPacket.setUserId(UUID.randomUUID().toString());
-        loginRequestPacket.setUsername("flash");
-        loginRequestPacket.setPassword("pwd");
+    protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket) {
+        String userId = loginResponsePacket.getUserId();
+        String userName = loginResponsePacket.getUserName();
 
-        // 写数据
-        ctx.channel().writeAndFlush(loginRequestPacket);
+        if (loginResponsePacket.isSuccess()) {
+            System.out.println("[" + userName + "]登录成功，userId 为: " + loginResponsePacket.getUserId());
+            SessionUtil.bindSession(new Session(userId, userName), ctx.channel());
+        } else {
+            System.out.println("[" + userName + "]登录失败，原因：" + loginResponsePacket.getReason());
+        }
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket) {
-        if (loginResponsePacket.isSuccess()) {
-            System.out.println(new Date() + ": 客户端登录成功");
-            LoginUtil.markAsLogin(ctx.channel());
-        } else {
-            System.out.println(new Date() + ": 客户端登录失败，原因：" + loginResponsePacket.getReason());
-        }
+    public void channelInactive(ChannelHandlerContext ctx) {
+        System.out.println("客户端连接被关闭!");
     }
 }

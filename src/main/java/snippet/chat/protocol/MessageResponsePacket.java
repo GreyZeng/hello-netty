@@ -1,8 +1,8 @@
 package snippet.chat.protocol;
 
-import lombok.Data;
+import lombok.Data; 
 
-import static snippet.chat.protocol.Command.MESSAGE_RESPONSE;
+import static snippet.chat.protocol.Command.MESSAGE_RESPONSE; 
 
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>
@@ -11,10 +11,16 @@ import static snippet.chat.protocol.Command.MESSAGE_RESPONSE;
  */
 @Data
 public class MessageResponsePacket extends Packet {
+
+    private String fromUserId;
+
+    private String fromUserName;
+
     private String message;
 
     @Override
     public Byte getCommand() {
+
         return MESSAGE_RESPONSE;
     }
 }
