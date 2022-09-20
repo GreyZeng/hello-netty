@@ -14,46 +14,44 @@ import java.util.Date;
 
 public class NettyServer {
 
-	private static final int PORT = 8000;
+    private static final int PORT = 8000;
 
-	public static void main(String[] args) {
-		NioEventLoopGroup boosGroup = new NioEventLoopGroup();
-		NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+    public static void main(String[] args) {
+        NioEventLoopGroup boosGroup = new NioEventLoopGroup();
+        NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
-		final ServerBootstrap serverBootstrap = new ServerBootstrap();
-		serverBootstrap.group(boosGroup, workerGroup).channel(NioServerSocketChannel.class)
-				.option(ChannelOption.SO_BACKLOG, 1024).childOption(ChannelOption.SO_KEEPALIVE, true)
-				.childOption(ChannelOption.TCP_NODELAY, true).childHandler(new ChannelInitializer<NioSocketChannel>() {
-					protected void initChannel(NioSocketChannel ch) {
+        final ServerBootstrap serverBootstrap = new ServerBootstrap();
+        serverBootstrap.group(boosGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024).childOption(ChannelOption.SO_KEEPALIVE, true).childOption(ChannelOption.TCP_NODELAY, true).childHandler(new ChannelInitializer<NioSocketChannel>() {
+            protected void initChannel(NioSocketChannel ch) {
 //                        ch.pipeline().addLast(new ServerHandler());
-						// ch.pipeline().addLast(new
-						// LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4));
-						// ch.pipeline().addLast(new InHandlerA());
-						// ch.pipeline().addLast(new InHandlerB());
-						// ch.pipeline().addLast(new InHandlerC());
-						// ch.pipeline().addLast(new OutHandlerA());
-						// ch.pipeline().addLast(new OutHandlerB());
-						// ch.pipeline().addLast(new OutHandlerC());
-						// ch.pipeline().addLast(new LifeCycleTestHandler());
-						ch.pipeline().addLast(new Splitter());
-						ch.pipeline().addLast(new PacketDecoder());
-						ch.pipeline().addLast(new LoginRequestHandler());
-						ch.pipeline().addLast(new AuthHandler());
-						ch.pipeline().addLast(new MessageRequestHandler());
-						ch.pipeline().addLast(new PacketEncoder());
-					}
-				});
+                // ch.pipeline().addLast(new
+                // LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4));
+                // ch.pipeline().addLast(new InHandlerA());
+                // ch.pipeline().addLast(new InHandlerB());
+                // ch.pipeline().addLast(new InHandlerC());
+                // ch.pipeline().addLast(new OutHandlerA());
+                // ch.pipeline().addLast(new OutHandlerB());
+                // ch.pipeline().addLast(new OutHandlerC());
+                // ch.pipeline().addLast(new LifeCycleTestHandler());
+                ch.pipeline().addLast(new Splitter());
+                ch.pipeline().addLast(new PacketDecoder());
+                ch.pipeline().addLast(new LoginRequestHandler());
+                ch.pipeline().addLast(new AuthHandler());
+                ch.pipeline().addLast(new MessageRequestHandler());
+                ch.pipeline().addLast(new PacketEncoder());
+            }
+        });
 
-		bind(serverBootstrap, PORT);
-	}
+        bind(serverBootstrap, PORT);
+    }
 
-	private static void bind(final ServerBootstrap serverBootstrap, final int port) {
-		serverBootstrap.bind(port).addListener(future -> {
-			if (future.isSuccess()) {
-				System.out.println(new Date() + ": 端口[" + port + "]绑定成功!");
-			} else {
-				System.err.println("端口[" + port + "]绑定失败!");
-			}
-		});
-	}
+    private static void bind(final ServerBootstrap serverBootstrap, final int port) {
+        serverBootstrap.bind(port).addListener(future -> {
+            if (future.isSuccess()) {
+                System.out.println(new Date() + ": 端口[" + port + "]绑定成功!");
+            } else {
+                System.err.println("端口[" + port + "]绑定失败!");
+            }
+        });
+    }
 }

@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
+ * 登录验证
+ *
  * @author <a href="mailto:410486047@qq.com">Grey</a>
  * @date 2022/9/12
  * @since

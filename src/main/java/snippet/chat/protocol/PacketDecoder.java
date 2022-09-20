@@ -7,6 +7,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 /**
+ * ByteBuf ---> 自定义报文格式
+ *
  * @author <a href="mailto:410486047@qq.com">Grey</a>
  * @date 2022/9/12
  * @since

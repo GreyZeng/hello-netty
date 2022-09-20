@@ -5,6 +5,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
+ * 解析报文格式
+ *
  * @author <a href="mailto:410486047@qq.com">Grey</a>
  * @date 2022/9/12
  * @since
