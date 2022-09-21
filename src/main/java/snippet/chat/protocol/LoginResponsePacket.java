@@ -2,7 +2,7 @@ package snippet.chat.protocol;
 
 import lombok.Data; 
 
-import static snippet.chat.protocol.Command.LOGIN_RESPONSE; 
+import static snippet.chat.protocol.Command.LOGIN_RESPONSE;
 
 @Data
 public class LoginResponsePacket extends Packet {
@@ -17,6 +17,8 @@ public class LoginResponsePacket extends Packet {
 
     @Override
     public Byte getCommand() {
+
         return LOGIN_RESPONSE;
     }
 }
+

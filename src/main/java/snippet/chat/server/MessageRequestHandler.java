@@ -1,14 +1,12 @@
 package snippet.chat.server;
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import snippet.chat.SessionUtil;
 import snippet.chat.protocol.MessageRequestPacket;
 import snippet.chat.protocol.MessageResponsePacket;
 import snippet.chat.protocol.Session;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.Date;
 
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>

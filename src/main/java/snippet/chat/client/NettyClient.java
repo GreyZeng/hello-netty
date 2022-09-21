@@ -1,9 +1,5 @@
 package snippet.chat.client;
 
-import java.util.Date;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -13,11 +9,15 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import snippet.chat.SessionUtil;
-import snippet.chat.protocol.LoginRequestPacket;
-import snippet.chat.protocol.MessageRequestPacket;
+import snippet.chat.protocol.ConsoleCommandManager;
+import snippet.chat.protocol.LoginConsoleCommand;
 import snippet.chat.protocol.PacketDecoder;
 import snippet.chat.protocol.PacketEncoder;
 import snippet.chat.protocol.Splitter;
+
+import java.util.Date;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>
@@ -43,7 +43,9 @@ public class NettyClient {
                 ch.pipeline().addLast(new Splitter());
                 ch.pipeline().addLast(new PacketDecoder());
                 ch.pipeline().addLast(new LoginResponseHandler());
+                ch.pipeline().addLast(new LogoutResponseHandler());
                 ch.pipeline().addLast(new MessageResponseHandler());
+                ch.pipeline().addLast(new CreateGroupResponseHandler());
                 ch.pipeline().addLast(new PacketEncoder());
             }
         });
@@ -71,36 +73,21 @@ public class NettyClient {
 
     // 启动控制台客户端，给服务端发送消息
     private static void startConsoleThread(Channel channel) {
-        Scanner sc = new Scanner(System.in);
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+        ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+        LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+        Scanner scanner = new Scanner(System.in);
 
         new Thread(() -> {
             while (!Thread.interrupted()) {
                 if (!SessionUtil.hasLogin(channel)) {
-                    System.out.print("输入用户名登录: ");
-                    String username = sc.nextLine();
-                    loginRequestPacket.setUserName(username);
-
-                    // 密码使用默认的
-                    loginRequestPacket.setPassword("pwd");
-
-                    // 发送登录数据包
-                    channel.writeAndFlush(loginRequestPacket);
-                    waitForLoginResponse();
+                    loginConsoleCommand.exec(scanner, channel);
                 } else {
-                    String toUserId = sc.next();
-                    String message = sc.next();
-                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                    consoleCommandManager.exec(scanner, channel);
                 }
             }
         }).start();
     }
 
 
-    private static void waitForLoginResponse() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ignored) {
-        }
-    }
+
 }
