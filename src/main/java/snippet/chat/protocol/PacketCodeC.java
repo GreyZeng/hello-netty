@@ -9,12 +9,18 @@ import java.util.Map;
 
 import static snippet.chat.protocol.Command.CREATE_GROUP_REQUEST;
 import static snippet.chat.protocol.Command.CREATE_GROUP_RESPONSE;
+import static snippet.chat.protocol.Command.JOIN_GROUP_REQUEST;
+import static snippet.chat.protocol.Command.JOIN_GROUP_RESPONSE;
+import static snippet.chat.protocol.Command.LIST_GROUP_MEMBERS_REQUEST;
+import static snippet.chat.protocol.Command.LIST_GROUP_MEMBERS_RESPONSE;
 import static snippet.chat.protocol.Command.LOGIN_REQUEST;
 import static snippet.chat.protocol.Command.LOGIN_RESPONSE;
 import static snippet.chat.protocol.Command.LOGOUT_REQUEST;
 import static snippet.chat.protocol.Command.LOGOUT_RESPONSE;
 import static snippet.chat.protocol.Command.MESSAGE_REQUEST;
 import static snippet.chat.protocol.Command.MESSAGE_RESPONSE;
+import static snippet.chat.protocol.Command.QUIT_GROUP_REQUEST;
+import static snippet.chat.protocol.Command.QUIT_GROUP_RESPONSE;
 
 
 public class PacketCodeC {
@@ -36,7 +42,12 @@ public class PacketCodeC {
         packetTypeMap.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
         packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
         packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
-
+        packetTypeMap.put(JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetTypeMap.put(LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetTypeMap.put(LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
         serializerMap.put(serializer.getSerializerAlgorithm(), serializer);
