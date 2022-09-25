@@ -2,8 +2,9 @@ package snippet.chat.protocol;
 
 import io.netty.channel.Channel;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.*;
 
 /**
  * @author <a href="mailto:410486047@qq.com">Grey</a>
@@ -21,6 +22,7 @@ public class ConsoleCommandManager implements ConsoleCommand {
         consoleCommandMap.put("joinGroup", new JoinGroupConsoleCommand());
         consoleCommandMap.put("quitGroup", new QuitGroupConsoleCommand());
         consoleCommandMap.put("listGroupMembers", new ListGroupMembersConsoleCommand());
+        consoleCommandMap.put("sendToGroup", new SendToGroupConsoleCommand());
     }
 
     @Override

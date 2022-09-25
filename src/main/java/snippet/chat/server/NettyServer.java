@@ -34,17 +34,10 @@ public class NettyServer {
                 // ch.pipeline().addLast(new OutHandlerC());
                 // ch.pipeline().addLast(new LifeCycleTestHandler());
                 ch.pipeline().addLast(new Splitter());
-                ch.pipeline().addLast(new PacketDecoder());
-                ch.pipeline().addLast(new LoginRequestHandler());
-                ch.pipeline().addLast(new AuthHandler());
-                ch.pipeline().addLast(new MessageRequestHandler());
-                ch.pipeline().addLast(new CreateGroupRequestHandler());
-                ch.pipeline().addLast(new JoinGroupRequestHandler());
-                ch.pipeline().addLast(new QuitGroupRequestHandler());
-                ch.pipeline().addLast(new ListGroupMembersRequestHandler());
-
-                ch.pipeline().addLast(new LogoutRequestHandler());
-                ch.pipeline().addLast(new PacketEncoder());
+                ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
+                ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                ch.pipeline().addLast(AuthHandler.INSTANCE);
+                ch.pipeline().addLast(IMHandler.INSTANCE);
             }
         });
 

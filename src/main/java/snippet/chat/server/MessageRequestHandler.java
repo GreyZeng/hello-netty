@@ -1,6 +1,7 @@
 package snippet.chat.server;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import snippet.chat.SessionUtil;
@@ -13,9 +14,19 @@ import snippet.chat.protocol.Session;
  * @date 2022/9/12
  * @since
  */
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
+
+    private MessageRequestHandler() {
+
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket messageRequestPacket) {
+        long begin = System.currentTimeMillis();
+
+
         // 1.拿到消息发送方的会话信息
         Session session = SessionUtil.getSession(ctx.channel());
 
@@ -30,9 +41,15 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
 
         // 4.将消息发送给消息接收方
         if (toUserChannel != null && SessionUtil.hasLogin(toUserChannel)) {
-            toUserChannel.writeAndFlush(messageResponsePacket);
+            toUserChannel.writeAndFlush(messageResponsePacket).addListener(future -> {
+                if (future.isDone()) {
+
+                }
+
+            });
         } else {
             System.err.println("[" + messageRequestPacket.getToUserId() + "] 不在线，发送失败!");
+
         }
     }
 }
