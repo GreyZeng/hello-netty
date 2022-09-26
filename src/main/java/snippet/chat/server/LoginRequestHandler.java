@@ -13,6 +13,7 @@ import java.util.Date;
 
 /**
  * 登录验证
+ * TODO 未做密码验证
  *
  * @author <a href="mailto:410486047@qq.com">Grey</a>
  * @date 2022/9/12
@@ -48,6 +49,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         ctx.writeAndFlush(loginResponsePacket);
     }
 
+    // TODO
+    // 增加自己的校验逻辑
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return true;
     }

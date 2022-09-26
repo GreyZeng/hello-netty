@@ -19,33 +19,27 @@ public class NettyServer {
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         final ServerBootstrap serverBootstrap = new ServerBootstrap();
-        serverBootstrap
-                .group(boosGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_BACKLOG, 1024)
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childOption(ChannelOption.TCP_NODELAY, true)
-                .childHandler(new ChannelInitializer<NioSocketChannel>() {
-                    protected void initChannel(NioSocketChannel ch) {
+        serverBootstrap.group(boosGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024).childOption(ChannelOption.SO_KEEPALIVE, true).childOption(ChannelOption.TCP_NODELAY, true).childHandler(new ChannelInitializer<NioSocketChannel>() {
+            protected void initChannel(NioSocketChannel ch) {
 //                        ch.pipeline().addLast(new ServerHandler());
-                        // ch.pipeline().addLast(new
-                        // LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4));
-                        // ch.pipeline().addLast(new InHandlerA());
-                        // ch.pipeline().addLast(new InHandlerB());
-                        // ch.pipeline().addLast(new InHandlerC());
-                        // ch.pipeline().addLast(new OutHandlerA());
-                        // ch.pipeline().addLast(new OutHandlerB());
-                        // ch.pipeline().addLast(new OutHandlerC());
-                        // ch.pipeline().addLast(new LifeCycleTestHandler());
-                        // 1. 校验报文格式
-                        ch.pipeline().addLast(new Splitter());
-                        // 2. 编码和解码
-                        ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
-                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
-                        ch.pipeline().addLast(AuthHandler.INSTANCE);
-                        ch.pipeline().addLast(IMHandler.INSTANCE);
-                    }
-                });
+                // ch.pipeline().addLast(new
+                // LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4));
+                // ch.pipeline().addLast(new InHandlerA());
+                // ch.pipeline().addLast(new InHandlerB());
+                // ch.pipeline().addLast(new InHandlerC());
+                // ch.pipeline().addLast(new OutHandlerA());
+                // ch.pipeline().addLast(new OutHandlerB());
+                // ch.pipeline().addLast(new OutHandlerC());
+                // ch.pipeline().addLast(new LifeCycleTestHandler());
+                // 1. 校验报文格式
+                ch.pipeline().addLast(new Splitter());
+                // 2. 编码和解码( ByteBuf --> Packet)
+                ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
+                ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                ch.pipeline().addLast(AuthHandler.INSTANCE);
+                ch.pipeline().addLast(IMHandler.INSTANCE);
+            }
+        });
 
         bind(serverBootstrap, PORT);
     }

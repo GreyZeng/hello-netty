@@ -16,6 +16,13 @@ import static snippet.chat.protocol.Command.LOGOUT_REQUEST;
 import static snippet.chat.protocol.Command.MESSAGE_REQUEST;
 import static snippet.chat.protocol.Command.QUIT_GROUP_REQUEST;
 
+/**
+ * Server 端根据不同的 Command 调用不同的 Handler 去处理请求
+ *
+ * @author <a href="mailto:410486047@qq.com">Grey</a>
+ * @date 2022/9/21
+ * @since 1.8
+ */
 @ChannelHandler.Sharable
 public class IMHandler extends SimpleChannelInboundHandler<Packet> {
     public static final IMHandler INSTANCE = new IMHandler();
@@ -24,7 +31,6 @@ public class IMHandler extends SimpleChannelInboundHandler<Packet> {
 
     private IMHandler() {
         handlerMap = new HashMap<>();
-
         handlerMap.put(MESSAGE_REQUEST, MessageRequestHandler.INSTANCE);
         handlerMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestHandler.INSTANCE);
         handlerMap.put(JOIN_GROUP_REQUEST, JoinGroupRequestHandler.INSTANCE);
