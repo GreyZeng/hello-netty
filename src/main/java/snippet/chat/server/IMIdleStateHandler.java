@@ -7,9 +7,11 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 心跳检测处理 Handler
+ *
  * @author <a href="mailto:410486047@qq.com">Grey</a>
  * @date 2022/9/21
- * @since
+ * @since 1.8
  */
 public class IMIdleStateHandler extends IdleStateHandler {
     private static final int READER_IDLE_TIME = 15;
