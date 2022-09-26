@@ -58,12 +58,12 @@ public final class SimpleServer {
         }
 
         @Override
-        public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        public void channelRegistered(ChannelHandlerContext ctx) {
             System.out.println("channelRegistered");
         }
 
         @Override
-        public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        public void handlerAdded(ChannelHandlerContext ctx) {
             System.out.println("handlerAdded");
         }
     }
