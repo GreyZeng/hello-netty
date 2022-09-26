@@ -31,10 +31,10 @@ public class NettyServer {
                 // ch.pipeline().addLast(new OutHandlerB());
                 // ch.pipeline().addLast(new OutHandlerC());
                 // ch.pipeline().addLast(new LifeCycleTestHandler());
-                // 1. 校验报文格式
-                ch.pipeline().addLast(new Splitter());
                 // 空闲检测
                 ch.pipeline().addLast(new IMIdleStateHandler());
+                // 1. 校验报文格式
+                ch.pipeline().addLast(new Splitter());
                 // 2. 编码和解码( ByteBuf --> Packet)
                 ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                 ch.pipeline().addLast(LoginRequestHandler.INSTANCE);

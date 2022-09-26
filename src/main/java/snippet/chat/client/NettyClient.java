@@ -14,6 +14,7 @@ import snippet.chat.protocol.LoginConsoleCommand;
 import snippet.chat.protocol.PacketDecoder;
 import snippet.chat.protocol.PacketEncoder;
 import snippet.chat.protocol.Splitter;
+import snippet.chat.server.IMIdleStateHandler;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -40,6 +41,8 @@ public class NettyClient {
 //                        ch.pipeline().addLast(new ClientHandler());
                 // 第一个参数是数据包的最大长度，第二个参数是长度域的偏移量，第三个参数是长度域的长度。
 //                 ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4));
+                // 空闲检测
+                ch.pipeline().addLast(new IMIdleStateHandler());
                 ch.pipeline().addLast(new Splitter());
                 ch.pipeline().addLast(new PacketDecoder());
                 // 登录响应处理器
@@ -59,6 +62,8 @@ public class NettyClient {
                 // 登出响应处理器
                 ch.pipeline().addLast(new LogoutResponseHandler());
                 ch.pipeline().addLast(new PacketEncoder());
+                // 心跳定时器
+                ch.pipeline().addLast(new HeartBeatTimerHandler());
             }
         });
         connect(bootstrap, HOST, PORT, MAX_RETRY);
@@ -99,7 +104,6 @@ public class NettyClient {
             }
         }).start();
     }
-
 
 
 }
