@@ -33,7 +33,22 @@ public final class SimpleServer {
                     // 设置服务端的 IO 类型是 NIO。Netty 通过指定 Channel 的类型来指定 IO 类型。
                     .channel(NioServerSocketChannel.class)
                     // 服务端启动过程中，需要经过哪些流程。
-                    .handler(new SimpleServerHandler())
+                    .handler(new ChannelInboundHandlerAdapter() {
+                        @Override
+                        public void channelActive(ChannelHandlerContext ctx) {
+                            System.out.println("channelActive");
+                        }
+
+                        @Override
+                        public void channelRegistered(ChannelHandlerContext ctx) {
+                            System.out.println("channelRegistered");
+                        }
+
+                        @Override
+                        public void handlerAdded(ChannelHandlerContext ctx) {
+                            System.out.println("handlerAdded");
+                        }
+                    })
                     // 用于设置一系列 Handler 来处理每个连接的数据
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -48,23 +63,6 @@ public final class SimpleServer {
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
-        }
-    }
-
-    private static class SimpleServerHandler extends ChannelInboundHandlerAdapter {
-        @Override
-        public void channelActive(ChannelHandlerContext ctx) throws Exception {
-            System.out.println("channelActive");
-        }
-
-        @Override
-        public void channelRegistered(ChannelHandlerContext ctx) {
-            System.out.println("channelRegistered");
-        }
-
-        @Override
-        public void handlerAdded(ChannelHandlerContext ctx) {
-            System.out.println("handlerAdded");
         }
     }
 }
