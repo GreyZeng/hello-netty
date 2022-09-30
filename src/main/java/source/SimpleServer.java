@@ -1,4 +1,4 @@
-package snippet.source;
+package source;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
