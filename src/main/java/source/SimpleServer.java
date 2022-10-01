@@ -21,6 +21,7 @@ public final class SimpleServer {
     public static void main(String[] args) throws InterruptedException {
         // EventLoopGroup: 服务端的线程模型外观类。这个线程要做的事情
         // 就是不停地检测IO事件，处理IO事件，执行任务。
+        // 如果没有设置程序启动参数，那么默认线程的个数为CPU核数乘以2
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
